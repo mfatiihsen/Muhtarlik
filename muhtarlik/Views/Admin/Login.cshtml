@@ -1,0 +1,136 @@
+@{
+    ViewData["Title"] = "Giriş Yap";
+    Layout = null;
+}
+
+<style>
+    body {
+        margin: 0;
+    }
+
+    .error-message {
+        color: red;
+        margin-top: 50px;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .background {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .glass-card {
+        width: 380px;
+        padding: 40px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        color: white;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .input-group input {
+        margin-top: 10px;
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        background: transparent;
+        border-bottom: 2px solid white;
+        outline: none;
+        color: white;
+    }
+
+    .input-group label {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        transition: 0.3s ease-in-out;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .input-group input:focus+label,
+    .input-group input:not(:placeholder-shown)+label {
+        top: 5px;
+        font-size: 12px;
+        color: white;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .login-text {
+        margin-top: 15px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .login-text a {
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .login-text a:hover {
+        color: yellow;
+    }
+</style>
+
+<div class="background">
+    <div class="login-container">
+        <div class="glass-card">
+            <h2>YÖNETİCİ GİRİŞİ</h2>
+            <form autocomplete="off" method="post" asp-controller="Admin" asp-action="Login">
+                <div class="input-group">
+                    <input type="email" name="eposta" required />
+                    <label>E-Posta</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" name="sifre" required />
+                    <label>Şifre</label>
+                </div>
+
+                <button type="submit" class="btn">Giriş Yap</button>
+            </form>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="error-message">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <p>@error.ErrorMessage</p>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

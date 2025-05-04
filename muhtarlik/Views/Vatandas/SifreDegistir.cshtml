@@ -1,0 +1,117 @@
+@model SifreDegistirViewModel
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa, #e0eafc);
+        }
+
+        .center-container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .form-card {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .form-card h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .form-card button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-card button:hover {
+            background-color: #0056b3;
+        }
+
+        .text-danger {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+
+    <div class="center-container">
+        <form  asp-action="SifreDegistir" asp-controller="Vatandas" method="post" class="form-card">
+            <h2>Şifre Değiştir</h2>
+            <input type="hidden" asp-for="TcKimlikNo" />
+            <div class="form-group">
+                <label>Eski Şifre</label>
+                <input asp-for="EskiSifre" type="password" class="form-control" />
+                <span asp-validation-for="EskiSifre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Yeni Şifre</label>
+                <input asp-for="YeniSifre" type="password" class="form-control" />
+                <span asp-validation-for="YeniSifre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Yeni Şifre (Tekrar)</label>
+                <input asp-for="YeniSifreTekrar" type="password" class="form-control" />
+                <span asp-validation-for="YeniSifreTekrar" class="text-danger"></span>
+            </div>
+
+            <button type="submit">Şifreyi Güncelle</button>
+
+
+
+            @if (ViewBag.Mesaj != null)
+            {
+                <div class="alert alert-success">@ViewBag.Mesaj</div>
+            }
+        </form>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }

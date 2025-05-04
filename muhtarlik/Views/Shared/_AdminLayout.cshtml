@@ -1,0 +1,60 @@
+@{
+    Layout = null; // Diğer layout'lar kullanılmasın
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/adminStyle.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="hamburger-menu" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="sidebar">
+        <div class="logo">
+            <a href="#"> </a>
+        </div>
+        <ul class="nav-links">
+            @* <li><a asp-action="Index" asp-controller="Home"><i class="fas fa-home"></i>Anasayfa</a></li> *@
+            <li><a asp-action="VatandasListele" asp-controller="Admin"><i class="fas fa-user"></i>Vatandaş Bilgileri</a>
+            </li>
+            <li><a asp-action="VatandasEkle" asp-controller="Admin"><i class="fa-solid fa-plus"></i>Vatandaş Ekle</a>
+            </li>
+            <li><a asp-action="AdresListele" asp-controller="Admin"><i class="fa-solid fa-location-dot"></i>Adres
+                    Bilgieri</a>
+            </li>
+            <li><a asp-action="Duyuru" asp-controller="Admin"><i class="fa-solid fa-bullhorn"></i>Duyurular</a>
+            </li>
+            <li><a asp-action="Dilekce" asp-controller="Admin"><i
+                        class="fa-solid fa-file-invoice"></i>Dilekçeler</a>
+            </li>
+            <li><a asp-action="Yoneticiler" asp-controller="Admin"><i class="fa-solid fa-lock"></i>Yöneticiler</a>
+            </li>
+            <li><a asp-action="Logout" asp-controller="Admin"><i class="fas fa-sign-out-alt"></i>Çıkış</a></li>
+        </ul>
+    </div>
+
+    <!-- Main content -->
+    <div class="content">
+        @RenderBody() <!-- Admin sayfasının içeriği buraya gelecek -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/sidebar.js"></script>
+</body>
+
+</html>

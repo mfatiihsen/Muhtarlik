@@ -1,0 +1,243 @@
+html {
+    font-size: 14px;
+  }
+  
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+
+  body {
+    display: flex; /* Flexbox kullanarak yan yana düzen */
+    min-height: 100vh; /* Sayfa yüksekliği tam ekran olacak şekilde ayarlandı */
+    margin: 0;;
+  }
+  
+  .hamburger-menu {
+    display: none; /* Masaüstünde gizle */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease-in-out;
+    position: fixed; /* Sabit pozisyon */
+    top: 0;
+    left: 0;
+    z-index: 100; /* İçeriğin üstünde olması için */
+  }
+  
+  .sidebar .logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar .logo a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .sidebar .nav-links {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar .nav-links li {
+    margin: 15px 0;
+  }
+  
+  .sidebar .nav-links li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .sidebar .nav-links li a:hover {
+    background-color: #fff;
+    color: #198754;
+  }
+  
+  .sidebar .nav-links li a i {
+    margin-right: 10px;
+  }
+  
+  /* Content Stili */
+  .content {
+    margin-left: 250px; /* Sidebar genişliği kadar boşluk bırak */
+    padding: 20px;
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    flex: 1; /* İçeriğin yan tarafa kaymasını sağlar */
+    transition: margin-left 0.3s ease-in-out;
+  }
+  
+  /* Mobil Cihazlar için Stil */
+  @media (max-width: 768px) {
+    body {
+      flex-direction: column; /* Mobilde flex yönünü dikey yap */
+    }
+  
+    .hamburger-menu {
+      display: block; /* Mobilde hamburger menü görünür */
+    }
+  
+    .sidebar {
+      transform: translateX(-100%); /* Sidebar gizli */
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 999;
+    }
+  
+    .sidebar.active {
+      transform: translateX(0); /* Sidebar'ı göster */
+    }
+  
+    .content-area {
+      margin-left: 0; /* Sidebar kapalıyken içerik tam genişlikte */
+    }
+  }
+  
+  
+  /*  vatandas ekleme formu css yapısı  */
+  /* Genel container stili */
+  /* .container {
+    max-width: 800px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  } */
+  
+  /* Form Başlığı */
+  .form-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .form-group label {
+    font-size: 1.1rem;
+    color: #555;
+    font-weight: 600;
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background-color: #f9f9f9;
+    padding: 0 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-control {
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    width: 100%;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+  
+  .form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 10px rgba(25, 135, 84, 0.5);
+    outline: none;
+    transform: scale(1.02);
+  }
+  
+  textarea.form-control {
+    resize: vertical;
+  }
+  
+  .btn-submit {
+    background-color: #198754;
+    border-color: #198754;
+    color: white;
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-submit:hover {
+    background-color: white;
+    color: #198754;
+    border: 1px solid #198754;
+    transform: translateY(-2px);
+  }
+  
+  .btn-submit:active {
+    transform: translateY(1px);
+  }
+  
+  .form-control, .btn-submit {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  input, select, textarea {
+    border-radius: 8px;
+  }
+  
+  .form-group input:focus + label,
+  .form-group select:focus + label,
+  .form-group textarea:focus + label {
+    top: -25px;
+    left: 10px;
+    font-size: 0.9rem;
+    color: #198754;
+    background-color: white;
+    padding: 0 5px;
+  }
+  
+  .form-control::placeholder {
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+  
+  .form-control:focus::placeholder {
+    opacity: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .btn-submit {
+        padding: 10px;
+    }
+  }
+  

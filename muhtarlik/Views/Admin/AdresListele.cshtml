@@ -1,0 +1,166 @@
+@model List<muhtarlik.Models.Adres>
+
+@{
+    Layout = null; // Diğer layout'lar kullanılmasın
+    Layout = "_AdminLayout";
+}
+
+
+
+
+<style>
+    .container {
+        margin-top: 30px;
+    }
+
+    .search-bar {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .table {
+        margin-top: 20px;
+    }
+
+    .table th,
+    .table td {
+        text-align: center;
+    }
+</style>
+
+
+<div class="container">
+    <h2>Vatandaş Bilgileri</h2>
+
+    <!-- Arama Barı -->
+    <div class="search-bar">
+        <input type="text" id="search" class="form-control" placeholder="TC Numarası ile arama yapın..."
+            onkeyup="aramaYap()">
+    </div>
+
+    <!-- Tablo -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>İL</th>
+                <th>İLÇE</th>
+                <th>SOKAK</th>
+                <th>CADDE</th>
+                <th>NO</th>
+                <th>DAİRE</th>
+                <th>TAM ADRES</th>
+                <th>DÜZENLE</th>
+                <th>SİL</th>
+            </tr>
+        </thead>
+        <tbody id="vatandaslarTbody">
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Il</td>
+                    <td>@item.Ilce</td>
+                    <td>@item.Sokak</td>
+                    <td>@item.Cadde</td>
+                    <td>@item.No</td>
+                    <td>@item.Daire</td>
+                    <td>@item.TamAdres</td>
+                    <td>
+                        <!-- Düzenleme Butonu -->
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
+                            onclick="openEditModal(@item.Id)">
+                            <i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <form asp-action="Delete" asp-controller="Vatandas" method="post"
+                            onsubmit="return confirm('Bu kişiyi silmek istediğinize emin misiniz?');">
+                            <input type="hidden" name="tcNo" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@* Modal *@
+<!-- Modal HTML -->
+@* <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Vatandaş Düzenle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" method="post" action="/Vatandas/Edit/@Model.TcNo">
+                        <div class="form-group">
+                            <label for="editTCKN">TC Kimlik No</label>
+                            <input type="text" class="form-control" id="editTCKN" name="TcNo" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editName">Ad</label>
+                            <input type="text" class="form-control" id="editName" name="Ad" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editSurname">Soyad</label>
+                            <input type="text" class="form-control" id="editSurname" name="Soyad" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> *@
+
+<script>
+    //-- arama yapma işlemi
+    function aramaYap() {
+        let input = document.getElementById('search');
+        let filter = input.value.toUpperCase();
+        let table = document.getElementById("vatandaslarTbody");
+        let tr = table.getElementsByTagName("tr");
+
+        for (let i = 0; i < tr.length; i++) {
+            let td = tr[i].getElementsByTagName("td")[0]; // TC No kolonu
+            if (td) {
+                let txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    // Modal ile Düzenleme işlemi
+    function openEditModal(tckn) {
+        $.ajax({
+            url: '/Vatandas/Edit/' + tckn,
+            method: 'GET',
+            success: function (data) {
+                if (data) {
+                    // Modal'ı dolduruyoruz
+                    $('#editName').val(data.ad);
+                    $('#editTCKN').val(data.tcNo);
+                    $('#editSurname').val(data.soyad); // Tarih burada doğru formatta gelmeli
+                    $('#editModal').modal('show'); // Modal'ı açıyoruz
+                } else {
+                    alert('Veri bulunamadı!');
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('Bir hata oluştu: ' + error);
+                console.log(xhr.responseText);  // Hata mesajını console'a yazdırıyoruz
+            }
+        });
+    }
+</script>

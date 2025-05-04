@@ -1,0 +1,224 @@
+@model Vatandas
+
+@{
+    ViewData["Title"] = "Bilgileriniz";
+    var adSoyad = Model.Ad + " " + Model.Soyad;
+    var adSoyadInitials = string.Join("", adSoyad.Split(' ').Select(x => x.Substring(0, 1).ToUpper()));
+}
+
+<style>
+    /* Sayfa genel stili */
+    body {
+        font-family: 'Arial', sans-serif;
+        height: 100vh;
+        /* Sayfa yüksekliği */
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Sayfa container */
+    .container {
+        margin-top: 65px;
+        width: 100%;
+        max-width: 1200px;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: space-around;
+        /* Öğeler arası boşluğu artırır */
+        align-items: flex-start;
+        /* Başlangıçta sabitler */
+    }
+
+
+
+
+    /* Profil kartı */
+    .profile-card {
+        width: 60%;
+        height: 600px;
+        padding: 25px;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-right: 20px;
+        /* Sağ tarafta boşluk bırakmak için */
+    }
+
+    /* Profil başlık */
+    .profile-card h2 {
+        font-size: 2.5rem;
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+
+    /* Profil bilgileri */
+    .profile-info {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        text-align: left;
+        /* Sola yasla */
+    }
+
+    /* Profil fotoğrafı */
+    .profile-photo {
+        margin: 20px auto;
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        background-color: #3498db;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    /* İşlemler bölümü */
+    .actions-card {
+        height: 600px;
+        width: 48%;
+        padding: 25px;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        align-items: left;
+        /* Dikeyde ortalama */
+        display: flex;
+        /* Flexbox ile yerleştirme */
+        flex-direction: column;
+        /* İçerikleri dikeyde sıralamak */
+        justify-content: center;
+        /* Dikeyde ortalama */
+    }
+
+    /* İşlem başlıkları */
+    .actions-card h3 {
+        font-size: 2rem;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    /* İşlem öğeleri */
+    .action-item {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    /* İşlem link stilleri */
+    .action-item a {
+        text-decoration: none;
+        color: #3498db;
+        transition: color 0.3s ease;
+        margin-left: 10px;
+    }
+
+    .action-item a:hover {
+        color: #2980b9;
+    }
+
+    /* Buton stilleri */
+    .btn {
+        background-color: #3498db;
+        color: white;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border-radius: 30px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-top: 30px;
+        display: inline-block;
+    }
+
+    .btn:hover {
+        background-color: #2980b9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Footer stili */
+    footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 1rem;
+        color: #888;
+    }
+
+    footer a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+
+<div class="container">
+    <!-- Profil Kartı -->
+    <div class="profile-card">
+        <div class="profile-photo">
+            <span>@adSoyadInitials</span>
+        </div>
+
+        <h2>@Model.Ad @Model.Soyad</h2> <!-- Kullanıcı Adı -->
+
+        <div class="profile-info">
+            <p><strong>TC Kimlik No:</strong> @Model.TcKimlikNo</p>
+            <p><strong>Ad:</strong> @Model.Ad</p>
+            <p><strong>Soyad:</strong> @Model.Soyad</p>
+            <p><strong>Soyad:</strong> @Model.Cinsiyet</p>
+            <p><strong>Doğum Tarihi:</strong> @Model.DogumTarihi.ToShortDateString()</p>
+        </div>
+
+        <a href="/Profile/Edit" class="btn">Bilgileri Düzenle</a>
+    </div>
+    <!-- Profil Kartı Sonu -->
+
+    <!-- Diğer İşlemler Kartı -->
+    <div class="actions-card">
+        <h3>Yapabileceğiniz İşlemler:</h3>
+
+        <div class="action-item">
+            <span>&#128221;</span>
+            <a href="/Basvuru">Dilekçe Gönder</a>
+        </div>
+
+        <div class="action-item">
+            <span>&#128387;</span>
+            <a href="/Iletisim">İletişim Bilgilerinizi Güncelleyin</a>
+        </div>
+
+        <div class="action-item">
+            <span>&#127968;</span>
+            <a href="/Adres">Adres Bilgilerinizi Güncelleyin</a>
+        </div>
+
+        <div class="action-item">
+            <span>&#128233;</span>
+            <a href="/Vatandas/SifreDegistir">Şifre Değiştir</a>
+        </div>
+
+        <div class="action-item">
+            <span>&#128682;</span>
+            <a href="Vatandas/Logout">Çıkış Yap</a>
+        </div>
+    </div>
+    <!-- Diğer İşlemler Kartı Sonu -->
+</div>
+
+<footer>
+    <p>&copy; 2025 Muhtarlık Sistemi | Tüm Hakları Saklıdır.</p>
+</footer>

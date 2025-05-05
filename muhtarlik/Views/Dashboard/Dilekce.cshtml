@@ -1,0 +1,55 @@
+@model muhtarlik.Models.Dilekce
+
+@{
+    ViewData["Title"] = "Dilekçe Gönder";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4 text-center">📝 Dilekçe Gönder</h2>
+
+    @if (TempData["basarili"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["basarili"]</div>
+    }
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    <form asp-action="Dilekce" method="post">
+        <div class="mb-3">
+            <label asp-for="AdSoyad" class="form-label"></label>
+            <input asp-for="AdSoyad" class="form-control" />
+            <span asp-validation-for="AdSoyad" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TCKimlikNo" class="form-label"></label>
+            <input asp-for="TCKimlikNo" class="form-control" />
+            <span asp-validation-for="TCKimlikNo" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Telefon" class="form-label"></label>
+            <input asp-for="Telefon" class="form-control" />
+            <span asp-validation-for="Telefon" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Baslik" class="form-label"></label>
+            <input asp-for="Baslik" class="form-control" />
+            <span asp-validation-for="Baslik" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Icerik" class="form-label"></label>
+            <textarea asp-for="Icerik" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Icerik" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Gönder</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

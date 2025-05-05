@@ -1,0 +1,73 @@
+@model List<muhtarlik.Models.Iletisim>
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">İletişim Bilgileri</h2>
+
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Telefon ile ara..."
+            onkeyup="aramaYap()" />
+    </div>
+
+    <table class="table table-bordered text-left">
+        <thead class="table-dark">
+            <tr>
+                <th>Telefon</th>
+                <th>Email</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody id="iletisimBody">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Telefon</td>
+                        <td>@item.Email</td>
+                        <td>
+
+                            <form asp-action="Delete" asp-controller="Iletisim" method="post"
+                                onsubmit="return confirm('Bu iletişim kaydını silmek istediğinize emin misiniz?');">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <a href="/Iletisim/Edit/@item.Id" class="btn btn-warning">
+                                    <i class="fas fa-edit" style="color:white;"></i>
+                                </a>
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <p>Veri bulunamadı.</p>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        function aramaYap() {
+            let input = document.getElementById('searchInput');
+            let filter = input.value.toUpperCase();
+            let tbody = document.getElementById('iletisimBody');
+            let rows = tbody.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                let telefon = rows[i].getElementsByTagName('td')[1];
+                if (telefon) {
+                    let value = telefon.textContent || telefon.innerText;
+                    rows[i].style.display = value.toUpperCase().includes(filter) ? '' : 'none';
+                }
+            }
+        }
+    </script>
+}

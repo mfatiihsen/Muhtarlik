@@ -1,12 +1,10 @@
-
-
 using System.ComponentModel.DataAnnotations;
 
 namespace muhtarlik.Models;
 
 public class Iletisim
 {
-   public int Id { get; set; }
+    public int Id { get; set; }
 
     [Required]
     public int VatandasId { get; set; }
@@ -16,7 +14,7 @@ public class Iletisim
     public string Telefon { get; set; }
 
     [Required]
-    [EmailAddress]  // E-posta adresi formatını kontrol eder
+    [EmailAddress] // E-posta adresi formatını kontrol eder
     public string Email { get; set; }
 
     // Navigation property

@@ -1,95 +1,79 @@
+@model List<muhtarlik.Models.Duyuru>
+
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Duyurular";
 }
 
-<!DOCTYPE html>
-<html lang="tr">
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">📢 Duyurular</h3>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ekleModal">
+            ➕ Duyuru Ekle
+        </button>
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Duyuru Yönetimi</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
-
-    <div class="container py-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="mb-0">📢 Duyurular</h3>
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ekleModal">
-                ➕ Duyuru Ekle
-            </button>
-        </div>
-
-        <table class="table table-bordered table-hover align-middle">
-            <thead class="table-light">
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Başlık</th>
+                <th>İçerik</th>
+                <th>Tarih</th>
+                <th style="width: 130px;">Düzenle</th>
+                <th>Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var duyuru in Model)
+            {
                 <tr>
-                    <th>Başlık</th>
-                    <th>İçerik</th>
-                    <th>Tarih</th>
-                    <th style="width: 130px;">Düzenle</th>
-                    <th>Sil</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Toplantı Duyurusu</td>
-                    <td>Mahalle halkı için 7 Mayıs'ta toplantı yapılacaktır.</td>
-                    <td>05.05.2025</td>
+                    <td>@duyuru.Baslik</td>
+                    <td>@duyuru.Icerik</td>
+                    <td>@duyuru.Tarih.ToString("dd.MM.yyyy")</td>
                     <td>
                         <button class="btn btn-sm btn-warning me-1">Düzenle</button>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-danger">Sil</button>
+                        <form method="post" asp-action="DuyuruSil" asp-route-id="@duyuru.Id"
+                            onsubmit="return confirm('Bu duyuruyu silmek istediğinize emin misiniz?');">
+                            <button type="submit" class="btn btn-sm btn-danger">Sil</button>
+                        </form>
                     </td>
                 </tr>
-                <tr>
-                    <td>Elektrik Kesintisi</td>
-                    <td>06 Mayıs günü saat 09:00-13:00 arası elektrik kesintisi yaşanacaktır.</td>
-                    <td>04.05.2025</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning me-1">Düzenle</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-danger">Sil</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+</div>
 
-    <!-- Duyuru Ekle Modal -->
-    <div class="modal fade" id="ekleModal" tabindex="-1" aria-labelledby="ekleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ekleModalLabel">Yeni Duyuru Ekle</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+<!-- Duyuru Ekle Modal -->
+<div class="modal fade" id="ekleModal" tabindex="-1" aria-labelledby="ekleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="DuyuruEkle" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ekleModalLabel">Yeni Duyuru Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Başlık</label>
+                        <input type="text" class="form-control" name="Baslik" placeholder="Örn: Asfalt çalışması"
+                            required />
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Başlık</label>
-                            <input type="text" class="form-control" placeholder="Örn: Asfalt çalışması">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">İçerik</label>
-                            <textarea class="form-control" rows="4" placeholder="Duyuru içeriğini girin..."></textarea>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">İçerik</label>
+                        <textarea class="form-control" name="Icerik" rows="4" placeholder="Duyuru içeriğini girin..."
+                            required></textarea>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-                        <button type="submit" class="btn btn-primary">Kaydet</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-
-</html>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

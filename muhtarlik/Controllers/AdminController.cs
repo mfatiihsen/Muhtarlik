@@ -135,7 +135,7 @@ public class AdminController : Controller
         _context.Vatandaslar.Add(vatandas);
         await _context.SaveChangesAsync();
 
-        return RedirectToAction("Home");
+        return RedirectToAction("VatandasListele");
     }
 
     public IActionResult AdresListele()
@@ -144,20 +144,57 @@ public class AdminController : Controller
         return View(adresler);
     }
 
+    // İletişim Sayfanın Açılması
+    [HttpGet]
+    public IActionResult IletisimListele()
+    {
+        var iletisimler = _context.Iletisimler.ToList();
+        return View(iletisimler);
+    }
+
     [HttpGet]
     public IActionResult Duyuru()
     {
-        return View();
+        var duyurular = _context.Duyurular.ToList();
+        return View(duyurular);
+    }
+
+    [HttpPost]
+    public IActionResult DuyuruEkle(Duyuru duyuru)
+    {
+        if (ModelState.IsValid)
+        {
+            duyuru.Tarih = DateTime.Now; // Duyuru eklerken tarih otomatik olarak şu anki zaman alınır
+            _context.Duyurular.Add(duyuru);
+            _context.SaveChanges();
+            return RedirectToAction("Duyuru"); // Listeleme sayfasına yönlendir
+        }
+
+        return View(duyuru);
+    }
+
+    [HttpPost]
+    public IActionResult DuyuruSil(int id)
+    {
+        var duyuru = _context.Duyurular.Find(id);
+        if (duyuru != null)
+        {
+            _context.Duyurular.Remove(duyuru);
+            _context.SaveChanges();
+        }
+        return RedirectToAction("Duyuru");
     }
 
     [HttpGet]
-    public IActionResult Dilekce(){
-        return View();
+    public IActionResult Dilekce()
+    {
+        var dilekceler = _context.Dilekceler.ToList();
+        return View(dilekceler);
     }
 
-
     [HttpGet]
-    public IActionResult Yoneticiler(){
+    public IActionResult Yoneticiler()
+    {
         return View();
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using muhtarlik.Models;
@@ -152,6 +153,46 @@ public class AdminController : Controller
         return View(iletisimler);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult IletisimDuzenle(Iletisim iletisim)
+    {
+        Console.WriteLine("Gelen ID: " + iletisim.Id);
+        Console.WriteLine("Telefon: " + iletisim.Telefon);
+        Console.WriteLine("Email: " + iletisim.Email);
+
+        if (ModelState.IsValid)
+        {
+            // İletişim kaydını ve ilişkili Vatandaş'ı yükle
+            var existing = _context
+                .Iletisimler.Include(i => i.Vatandas) // İletişim ile ilişkili Vatandaş'ı yükle
+                .FirstOrDefault(x => x.Id == iletisim.Id);
+
+            // Eğer bulunduyse, güncelleme işlemi
+            if (existing != null)
+            {
+                // Değerleri güncelle
+                existing.Telefon = iletisim.Telefon;
+                existing.Email = iletisim.Email;
+
+                // Eğer Vatandaş bilgilerini güncellemek istiyorsanız:
+                // existing.Vatandas.Ad = ... (bu satırı kullanarak Vatandaş'ı güncelleyebilirsiniz)
+
+                _context.Entry(existing).State = EntityState.Modified; // Değişiklik olarak işaretle
+                _context.SaveChanges();
+
+                TempData["basarili"] = "İletişim bilgileri başarıyla güncellendi.";
+                return RedirectToAction("Home");
+            }
+            else
+            {
+                return NotFound(); // Kayıt bulunamazsa
+            }
+        }
+
+        return RedirectToAction("IletisimListele");
+    }
+
     [HttpGet]
     public IActionResult Duyuru()
     {
@@ -185,6 +226,67 @@ public class AdminController : Controller
         return RedirectToAction("Duyuru");
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult DuyuruDuzenle(Duyuru duyuru)
+    {
+        if (ModelState.IsValid)
+        {
+            var existingDuyuru = _context.Duyurular.FirstOrDefault(d => d.Id == duyuru.Id);
+            if (existingDuyuru != null)
+            {
+                existingDuyuru.Baslik = duyuru.Baslik;
+                existingDuyuru.Icerik = duyuru.Icerik;
+                existingDuyuru.Tarih = DateTime.Now; // Tarihi güncelleme
+
+                _context.SaveChanges();
+
+                TempData["basarili"] = "Duyuru başarıyla güncellendi.";
+                return RedirectToAction("Duyuru");
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        return View(duyuru);
+    }
+
+    [HttpGet]
+    public IActionResult GetAddress(int id)
+    {
+        var address = _context.Adresler.FirstOrDefault(a => a.Id == id);
+        if (address != null)
+        {
+            return Json(address); // JSON olarak veriyi döndürüyoruz
+        }
+        return Json(new { success = false, message = "Adres bulunamadı!" });
+    }
+
+    [HttpPost]
+    public IActionResult AdresDuzenleme(Adres adres)
+    {
+        if (ModelState.IsValid)
+        {
+            var existingAddress = _context.Adresler.FirstOrDefault(a => a.Id == adres.Id);
+            if (existingAddress != null)
+            {
+                existingAddress.Il = adres.Il;
+                existingAddress.Ilce = adres.Ilce;
+                existingAddress.Sokak = adres.Sokak;
+                existingAddress.Cadde = adres.Cadde;
+                existingAddress.No = adres.No;
+                existingAddress.Daire = adres.Daire;
+                existingAddress.TamAdres = adres.TamAdres;
+
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        return Json(new { success = false });
+    }
+
     [HttpGet]
     public IActionResult Dilekce()
     {
@@ -195,6 +297,41 @@ public class AdminController : Controller
     [HttpGet]
     public IActionResult Yoneticiler()
     {
-        return View();
+        var yoneticiler = _context.Muhtars.ToList();
+        return View(yoneticiler);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> YoneticiEkle(
+        string AdSoyad,
+        string Email,
+        string Telefon,
+        string TcKimlikNo,
+        string Sifre
+    )
+    {
+        if (ModelState.IsValid)
+        {
+            // Şifreyi hash'leyelim
+            var passwordHasher = new PasswordHasher<Muhtar>();
+            var hashedPassword = passwordHasher.HashPassword(null, Sifre);
+
+            var yeniYonetici = new Muhtar
+            {
+                AdSoyad = AdSoyad,
+                Email = Email,
+                Telefon = Telefon,
+                TcKimlikNo = TcKimlikNo,
+                OlusturmaTarih = DateTime.Now,
+                Sifre = hashedPassword, // Şifreyi hash'leyip kaydediyoruz
+            };
+
+            _context.Muhtars.Add(yeniYonetici);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Yoneticiler)); // Yöneticiler sayfasına geri dönebilirsiniz
+        }
+
+        return View(); // Hata durumunda formu tekrar göstermek için
     }
 }

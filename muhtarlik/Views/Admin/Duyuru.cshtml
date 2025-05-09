@@ -31,7 +31,10 @@
                     <td>@duyuru.Icerik</td>
                     <td>@duyuru.Tarih.ToString("dd.MM.yyyy")</td>
                     <td>
-                        <button class="btn btn-sm btn-warning me-1">Düzenle</button>
+                        <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#duzenleModal"
+                            data-id="@duyuru.Id" data-baslik="@duyuru.Baslik" data-icerik="@duyuru.Icerik">
+                            Düzenle
+                        </button>
                     </td>
                     <td>
                         <form method="post" asp-action="DuyuruSil" asp-route-id="@duyuru.Id"
@@ -75,5 +78,55 @@
     </div>
 </div>
 
+<!-- Duyuru Düzenle Modal -->
+<div class="modal fade" id="duzenleModal" tabindex="-1" aria-labelledby="duzenleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="DuyuruDuzenle" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="duzenleModalLabel">Duyuruyu Düzenle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="duzenleDuyuruId" name="Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Başlık</label>
+                        <input type="text" class="form-control" id="duzenleBaslik" name="Baslik" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">İçerik</label>
+                        <textarea class="form-control" id="duzenleIcerik" name="Icerik" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Modal'a veri aktarımı
+    var duzenleModal = document.getElementById('duzenleModal');
+    duzenleModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-id');
+        var baslik = button.getAttribute('data-baslik');
+        var icerik = button.getAttribute('data-icerik');
+
+        // Modal'daki form elemanlarına değerleri yerleştir
+        var modalId = duzenleModal.querySelector('#duzenleDuyuruId');
+        var modalBaslik = duzenleModal.querySelector('#duzenleBaslik');
+        var modalIcerik = duzenleModal.querySelector('#duzenleIcerik');
+
+        modalId.value = id;
+        modalBaslik.value = baslik;
+        modalIcerik.value = icerik;
+    });
+</script>

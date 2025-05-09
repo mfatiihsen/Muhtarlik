@@ -179,7 +179,7 @@
             <p><strong>TC Kimlik No:</strong> @Model.TcKimlikNo</p>
             <p><strong>Ad:</strong> @Model.Ad</p>
             <p><strong>Soyad:</strong> @Model.Soyad</p>
-            <p><strong>Soyad:</strong> @Model.Cinsiyet</p>
+            <p><strong>Cinsiyet:</strong> @Model.Cinsiyet</p>
             <p><strong>Doğum Tarihi:</strong> @Model.DogumTarihi.ToShortDateString()</p>
         </div>
 
@@ -198,7 +198,7 @@
 
         <div class="action-item">
             <span>&#128387;</span>
-            <a href="/Iletisim">İletişim Bilgilerinizi Güncelleyin</a>
+            <a asp-controller="Dashboard" asp-action="IletisimGuncelle">İletişim Bilgilerinizi Güncelleyin</a>
         </div>
 
         <div class="action-item">

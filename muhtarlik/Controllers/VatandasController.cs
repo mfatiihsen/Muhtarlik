@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using muhtarlik.Models;
 
 namespace muhtarlik.Controllers;
 
@@ -29,9 +30,10 @@ public class VatandasController : Controller
             return View();
         }
 
-        var vatandas = await _context.Vatandaslar.FirstOrDefaultAsync(v =>
-            v.TcKimlikNo == tcKimlikNo && v.Sifre == sifre
-        );
+        // Vatandas'ı ve ilişkili Iletisim'i bul
+        var vatandas = await _context
+            .Vatandaslar.Include(v => v.Iletisimler) // İletişim bilgilerini dahil et
+            .FirstOrDefaultAsync(v => v.TcKimlikNo == tcKimlikNo && v.Sifre == sifre);
 
         if (vatandas == null)
         {
@@ -39,7 +41,13 @@ public class VatandasController : Controller
             return View();
         }
 
+        // Session'a bilgileri kaydet
         HttpContext.Session.SetString("TcKimlikNo", vatandas.TcKimlikNo);
+        HttpContext.Session.SetString("Ad", vatandas.Ad);
+        HttpContext.Session.SetString("Soyad", vatandas.Soyad);
+        var telefon = vatandas.Iletisimler?.FirstOrDefault()?.Telefon ?? "Telefon bulunamadı";
+        HttpContext.Session.SetString("Telefon", telefon); // Telefonu oturuma kaydet
+
         HttpContext.Session.SetString("VatandasId", vatandas.Id.ToString());
 
         return RedirectToAction("Index", "Dashboard");
@@ -93,5 +101,4 @@ public class VatandasController : Controller
         ViewBag.Mesaj = "Şifre başarıyla değiştirildi.";
         return RedirectToAction("Index", "Dashboard"); // veya başka bir sayfa
     }
-
 }

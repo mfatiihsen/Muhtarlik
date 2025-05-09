@@ -29,13 +29,15 @@
                         <td>@item.Telefon</td>
                         <td>@item.Email</td>
                         <td>
-
+                            @* <!-- Düzenleme butonu -->
+                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#duzenleModal"
+                                data-id="@item.Id" data-telefon="@item.Telefon" data-email="@item.Email">
+                                Düzenle
+                            </button> *@
+                            <!-- Silme işlemi -->
                             <form asp-action="Delete" asp-controller="Iletisim" method="post"
                                 onsubmit="return confirm('Bu iletişim kaydını silmek istediğinize emin misiniz?');">
                                 <input type="hidden" name="id" value="@item.Id" />
-                                <a href="/Iletisim/Edit/@item.Id" class="btn btn-warning">
-                                    <i class="fas fa-edit" style="color:white;"></i>
-                                </a>
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -48,26 +50,63 @@
             {
                 <p>Veri bulunamadı.</p>
             }
-
         </tbody>
     </table>
 </div>
 
+<!-- Düzenleme Modal'ı -->
+<div class="modal fade" id="duzenleModal" tabindex="-1" aria-labelledby="duzenleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="IletisimDuzenle" asp-controller="Admin" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="duzenleModalLabel">İletişim Bilgilerini Düzenle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="IletisimId" name="Id" />
+                    <div class="mb-3">
+                        <label class="form-label">Telefon</label>
+                        <input type="text" class="form-control" id="IletisimTelefon" name="Telefon" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="IletisimEmail" name="Email" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
-        function aramaYap() {
-            let input = document.getElementById('searchInput');
-            let filter = input.value.toUpperCase();
-            let tbody = document.getElementById('iletisimBody');
-            let rows = tbody.getElementsByTagName('tr');
 
-            for (let i = 0; i < rows.length; i++) {
-                let telefon = rows[i].getElementsByTagName('td')[1];
-                if (telefon) {
-                    let value = telefon.textContent || telefon.innerText;
-                    rows[i].style.display = value.toUpperCase().includes(filter) ? '' : 'none';
-                }
-            }
-        }
+        // Modal açıldığında verileri doldur
+        var duzenleModal = document.getElementById('duzenleModal');
+        duzenleModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+
+            // Butondaki veri attribute'larını al
+            var id = button.getAttribute('data-id');
+            var telefon = button.getAttribute('data-telefon');
+            var email = button.getAttribute('data-email');
+
+            // Modal içindeki inputlara bu değerleri ata
+            var modalId = duzenleModal.querySelector('#IletisimId');
+            var modalTelefon = duzenleModal.querySelector('#IletisimTelefon');
+            var modalEmail = duzenleModal.querySelector('#IletisimEmail');
+
+            modalId.value = id;
+            modalTelefon.value = telefon;
+            modalEmail.value = email;
+            
+        console.log("ID:", id, "Telefon:", telefon, "Email:", email);
+        });
     </script>
 }

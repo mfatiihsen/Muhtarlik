@@ -4,10 +4,8 @@ namespace muhtarlik.Models;
 
 public class Iletisim
 {
+    [Key]
     public int Id { get; set; }
-
-    [Required]
-    public int VatandasId { get; set; }
 
     [Required]
     [StringLength(20)]
@@ -18,5 +16,6 @@ public class Iletisim
     public string Email { get; set; }
 
     // Navigation property
+    public int VatandasId { get; set; }
     public Vatandas Vatandas { get; set; }
 }

@@ -64,18 +64,18 @@
                     <td>@item.Cinsiyet</td>
                     <td>
                         <div class="btn-group">
-                            <!-- Düzenleme Butonu -->
+                            @* <!-- Düzenleme Butonu -->
                             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
                                 onclick="openEditModal('@item.TcKimlikNo')">
-                                <i class="fa-solid fa-pen-to-square" style="color:white"></i> Düzenle
-                            </button>
+                                <i class="fa-solid fa-pen-to-square" style="color:white"></i> 
+                            </button> *@
 
                             <!-- Silme Butonu -->
                             <form asp-action="Delete" asp-controller="Vatandas" method="post"
                                 onsubmit="return confirm('Bu kişiyi silmek istediğinize emin misiniz?');" style="display:inline;">
                                 <input type="hidden" name="tcNo" value="@item.TcKimlikNo" />
                                 <button type="submit" class="btn btn-danger">
-                                    <i class="fa-solid fa-trash"></i> Sil
+                                    <i class="fa-solid fa-trash"></i> 
                                 </button>
                             </form>
                         </div>

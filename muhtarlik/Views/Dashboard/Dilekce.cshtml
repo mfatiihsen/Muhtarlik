@@ -16,23 +16,6 @@
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <form asp-action="Dilekce" method="post">
-        <div class="mb-3">
-            <label asp-for="AdSoyad" class="form-label"></label>
-            <input asp-for="AdSoyad" class="form-control" />
-            <span asp-validation-for="AdSoyad" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="TCKimlikNo" class="form-label"></label>
-            <input asp-for="TCKimlikNo" class="form-control" />
-            <span asp-validation-for="TCKimlikNo" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Telefon" class="form-label"></label>
-            <input asp-for="Telefon" class="form-control" />
-            <span asp-validation-for="Telefon" class="text-danger"></span>
-        </div>
 
         <div class="mb-3">
             <label asp-for="Baslik" class="form-label"></label>

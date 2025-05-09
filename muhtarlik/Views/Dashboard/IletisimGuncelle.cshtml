@@ -1,0 +1,25 @@
+@model Iletisim
+
+@{
+    ViewData["Title"] = "İletişim Bilgilerini Güncelle";
+}
+
+<div class="container mt-5">
+    <h2>İletişim Bilgilerini Güncelle</h2>
+
+    <form asp-action="IletisimGuncelle" method="post" class="mt-4">
+       
+        <div class="mb-3">
+            <label for="Telefon" class="form-label">Telefon</label>
+            <input type="text" class="form-control" id="Telefon" value="@Model.Telefon" name="Telefon"  required>
+        </div>
+
+        <div class="mb-3">
+            <label for="Email" class="form-label">E-posta</label>
+            <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Güncelle</button>
+        <a href="/Vatandas/Bilgileriniz" class="btn btn-secondary">İptal</a>
+    </form>
+</div>

@@ -54,6 +54,8 @@ public class VatandasController : Controller
     }
 
     // Oturum Kapatma Metodu
+
+    [HttpGet]
     public IActionResult Logout()
     {
         HttpContext.Session.Clear();
@@ -63,42 +65,50 @@ public class VatandasController : Controller
     [HttpGet]
     public IActionResult SifreDegistir()
     {
-        return View();
+        var tc = HttpContext.Session.GetString("TcKimlikNo");
+
+        var model = new SifreDegistirViewModel { TcKimlikNo = tc };
+
+        return View(model);
     }
 
     // Şifre değiştirme metodu
     [HttpPost]
     public IActionResult SifreDegistir(SifreDegistirViewModel model)
     {
-        if (!ModelState.IsValid)
-            return View(model);
-
         var tc = HttpContext.Session.GetString("TcKimlikNo");
+        model.TcKimlikNo = tc; // View tekrar dönerse Tc dolu olsun
 
         if (string.IsNullOrEmpty(tc))
         {
-            ModelState.AddModelError(
-                "",
-                "Oturum süresi dolmuş olabilir. Lütfen tekrar giriş yapın."
-            );
+            // Oturum yoksa login'e yönlendir
+            TempData["Error"] = "Oturum süresi dolmuş olabilir. Lütfen tekrar giriş yapın.";
             return RedirectToAction("Login", "Vatandas");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(model);
         }
 
         var vatandas = _context.Vatandaslar.FirstOrDefault(v => v.TcKimlikNo == tc);
 
-        if (vatandas == null || vatandas.Sifre != model.EskiSifre)
+        if (vatandas == null)
+        {
+            ModelState.AddModelError("", "Vatandaş bilgisi bulunamadı.");
+            return View(model);
+        }
+
+        if (vatandas.Sifre != model.EskiSifre)
         {
             ModelState.AddModelError("", "Eski şifre hatalı.");
-            model.TcKimlikNo = tc;
             return View(model);
         }
 
         vatandas.Sifre = model.YeniSifre;
         _context.SaveChanges();
 
-        model.TcKimlikNo = tc;
-        Console.WriteLine(tc);
-        ViewBag.Mesaj = "Şifre başarıyla değiştirildi.";
-        return RedirectToAction("Index", "Dashboard"); // veya başka bir sayfa
+        TempData["Success"] = "Şifreniz başarıyla değiştirildi.";
+        return RedirectToAction("Index", "Dashboard");
     }
 }

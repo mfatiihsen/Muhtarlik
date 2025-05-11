@@ -1,0 +1,58 @@
+@model Adres
+
+@{
+    ViewData["Title"] = "Adres Bilgilerini Güncelle";
+}
+
+<div class="container mt-5">
+    <h2>Adres Bilgilerini Güncelle</h2>
+
+    <form asp-action="AdresGuncelle" method="post" class="mt-4">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success text-center">@TempData["Success"] <a asp-controller="Dashboard"
+                    asp-action="Index">Ana Sayfa</a></div>
+        }
+
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+
+        <div class="mb-3">
+            <label for="Il" class="form-label">Tam Adres</label>
+            <input type="text" class="form-control" id="Il" name="TamAdres" value="@Model.TamAdres" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="Il" class="form-label">İl</label>
+            <input type="text" class="form-control" id="Il" name="Il" value="@Model.Il" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="Ilce" class="form-label">İlçe</label>
+            <input type="text" class="form-control" id="Ilce" name="Ilce" value="@Model.Ilce" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="Mahalle" class="form-label">Sokak</label>
+            <input type="text" class="form-control" id="Mahalle" name="Sokak" value="@Model.Sokak" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="Sokak" class="form-label">Cadde</label>
+            <input type="text" class="form-control" id="Sokak" name="Cadde" value="@Model.Cadde">
+        </div>
+
+        <div class="mb-3">
+            <label for="Sokak" class="form-label">No</label>
+            <input type="text" class="form-control" id="Sokak" name="No" value="@Model.No">
+        </div>
+
+        <div class="mb-3">
+            <label for="Sokak" class="form-label">Daire</label>
+            <input type="text" class="form-control" id="Sokak" name="Daire" value="@Model.Daire">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Güncelle</button>
+        <a href="/Vatandas/Bilgileriniz" class="btn btn-secondary">İptal</a>
+    </form>
+</div>

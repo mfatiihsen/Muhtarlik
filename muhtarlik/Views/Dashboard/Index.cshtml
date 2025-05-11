@@ -183,7 +183,7 @@
             <p><strong>Doğum Tarihi:</strong> @Model.DogumTarihi.ToShortDateString()</p>
         </div>
 
-        <a href="/Profile/Edit" class="btn">Bilgileri Düzenle</a>
+        @* <a href="/Profile/Edit" class="btn">Bilgileri Düzenle</a> *@
     </div>
     <!-- Profil Kartı Sonu -->
 
@@ -203,12 +203,12 @@
 
         <div class="action-item">
             <span>&#127968;</span>
-            <a href="/Adres">Adres Bilgilerinizi Güncelleyin</a>
+            <a asp-controller="Dashboard" asp-action="AdresGuncelle">Adres Bilgilerinizi Güncelleyin</a>
         </div>
 
         <div class="action-item">
             <span>&#128233;</span>
-            <a href="/Vatandas/SifreDegistir">Şifre Değiştir</a>
+             <a asp-controller="Vatandas" asp-action="SifreDegistir">Şifre Değiştir</a>
         </div>
         <div class="action-item">
             <span>&#128227;</span>
@@ -217,7 +217,7 @@
 
         <div class="action-item">
             <span>&#128682;</span>
-            <a href="Vatandas/Logout">Çıkış Yap</a>
+            <a asp-controller="Vatandas" asp-action="Logout">Çıkış Yap</a>
         </div>
     </div>
     <!-- Diğer İşlemler Kartı Sonu -->

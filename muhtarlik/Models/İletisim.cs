@@ -17,5 +17,5 @@ public class Iletisim
 
     // Navigation property
     public int VatandasId { get; set; }
-    public Vatandas Vatandas { get; set; }
+    public Vatandas? Vatandas { get; set; }
 }

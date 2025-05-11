@@ -111,12 +111,14 @@ public class DashBoardController : Controller
     {
         if (!ModelState.IsValid)
         {
+            TempData["Error"] = "Boş Geldi";
             return View(model);
         }
 
         var vatandasId = HttpContext.Session.GetString("VatandasId");
         if (vatandasId == null)
         {
+            TempData["Error"] = "Giriş Yapılmamış.";
             return RedirectToAction("Login", "Vatandas");
         }
 
@@ -134,6 +136,45 @@ public class DashBoardController : Controller
         _context.SaveChanges();
 
         TempData["Success"] = "İletişim bilgileriniz güncellendi.";
-        return RedirectToAction("Index");
+        return RedirectToAction("IletisimGuncelle");
+    }
+
+    [HttpGet]
+    public IActionResult AdresGuncelle()
+    {
+        var vatandasId = HttpContext.Session.GetString("VatandasId");
+        if (vatandasId == null)
+            return RedirectToAction("Login", "Vatandas");
+
+        var adres = _context.Adresler.FirstOrDefault(a => a.VatandasId.ToString() == vatandasId);
+        return View(adres);
+    }
+
+    [HttpPost]
+    public IActionResult AdresGuncelle(Adres model)
+    {
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var vatandasId = HttpContext.Session.GetString("VatandasId");
+        if (vatandasId == null)
+            return RedirectToAction("Login", "Vatandas");
+
+        var adres = _context.Adresler.FirstOrDefault(a => a.VatandasId.ToString() == vatandasId);
+        if (adres == null)
+            return RedirectToAction("Index");
+
+        adres.TamAdres = model.TamAdres;
+        adres.Il = model.Il;
+        adres.Ilce = model.Ilce;
+        adres.Sokak = model.Sokak;
+        adres.Cadde = model.Cadde;
+        adres.No = model.No;
+        adres.Daire = model.Daire;
+
+        _context.SaveChanges();
+
+        TempData["Success"] = "Adres bilgileriniz güncellendi.";
+        return RedirectToAction("AdresGuncelle");
     }
 }

@@ -20,5 +20,5 @@ public class Adres
     public string TamAdres { get; set; }
 
     // Navigation property
-    public Vatandas Vatandas { get; set; }
+    public Vatandas? Vatandas { get; set; }
 }

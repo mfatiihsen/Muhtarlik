@@ -312,9 +312,6 @@ public class AdminController : Controller
     {
         if (ModelState.IsValid)
         {
-            // Şifreyi hash'leyelim
-            var passwordHasher = new PasswordHasher<Muhtar>();
-            var hashedPassword = passwordHasher.HashPassword(null, Sifre);
 
             var yeniYonetici = new Muhtar
             {
@@ -323,7 +320,7 @@ public class AdminController : Controller
                 Telefon = Telefon,
                 TcKimlikNo = TcKimlikNo,
                 OlusturmaTarih = DateTime.Now,
-                Sifre = hashedPassword, // Şifreyi hash'leyip kaydediyoruz
+                Sifre = Sifre, // Şifreyi hash'leyip kaydediyoruz
             };
 
             _context.Muhtars.Add(yeniYonetici);

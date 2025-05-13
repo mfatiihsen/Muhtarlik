@@ -35,7 +35,11 @@
           <td>@dilekce.Telefon</td>
           <td>@dilekce.Tarih.ToString("dd.MM.yyyy")</td>
           <td>
-            <button class="btn btn-sm btn-danger">Sil</button>
+            <form asp-action="DilekceSil" asp-controller="Admin" method="post"
+              onsubmit="return confirm('Bu dilekçeyi silmek istediğinize emin misiniz?');">
+              <input type="hidden" name="id" value="@dilekce.Id">
+              <button class="btn btn-sm btn-danger">Sil</button>
+            </form>
           </td>
         </tr>
       }

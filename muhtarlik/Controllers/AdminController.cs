@@ -67,7 +67,7 @@ public class AdminController : Controller
         HttpContext.Session.SetString("MuhtarId", muhtar.Id.ToString());
 
         // Muhtar paneline yönlendir
-        return RedirectToAction("Home", "Admin");
+        return RedirectToAction("VatandasListele", "Admin");
     }
 
     // Çıkış İşlemi Yapmak için yazılan metot
@@ -333,5 +333,79 @@ public class AdminController : Controller
         }
 
         return View(); // Hata durumunda formu tekrar göstermek için
+    }
+
+    // Silme İşlemleri
+    [HttpPost]
+    public async Task<IActionResult> IletisimSil(int id)
+    {
+        var iletisim = await _context.Iletisimler.FindAsync(id);
+
+        if (iletisim == null)
+        {
+            return NotFound();
+        }
+
+        _context.Iletisimler.Remove(iletisim);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("IletisimListele"); // ya da liste sayfasına yönlendirme
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AdresSil(int id)
+    {
+        var adres = await _context.Adresler.FindAsync(id);
+
+        if (adres == null)
+        {
+            return NotFound();
+        }
+        _context.Adresler.Remove(adres);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("AdresListele");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> VatandasSil(int id)
+    {
+        var vatandas = await _context.Vatandaslar.FindAsync(id);
+
+        if (vatandas == null)
+        {
+            return NotFound();
+        }
+
+        _context.Vatandaslar.Remove(vatandas);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("VatandasListele");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DilekceSil(int id)
+    {
+        var dilekce = await _context.Dilekceler.FindAsync(id);
+
+        if (dilekce == null)
+        {
+            return NotFound();
+        }
+        _context.Dilekceler.Remove(dilekce);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Dilekce");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> YoneticiSil(int id)
+    {
+        var yonetici = await _context.Muhtars.FindAsync(id);
+        if (yonetici == null)
+        {
+            return NotFound();
+        }
+
+        _context.Muhtars.Remove(yonetici);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Yoneticiler");
     }
 }

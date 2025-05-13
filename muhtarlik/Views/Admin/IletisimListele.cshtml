@@ -29,13 +29,8 @@
                         <td>@item.Telefon</td>
                         <td>@item.Email</td>
                         <td>
-                            @* <!-- Düzenleme butonu -->
-                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#duzenleModal"
-                                data-id="@item.Id" data-telefon="@item.Telefon" data-email="@item.Email">
-                                Düzenle
-                            </button> *@
                             <!-- Silme işlemi -->
-                            <form asp-action="Delete" asp-controller="Iletisim" method="post"
+                            <form asp-action="IletisimSil" asp-controller="Admin" method="post"
                                 onsubmit="return confirm('Bu iletişim kaydını silmek istediğinize emin misiniz?');">
                                 <input type="hidden" name="id" value="@item.Id" />
                                 <button type="submit" class="btn btn-danger">
@@ -105,8 +100,8 @@
             modalId.value = id;
             modalTelefon.value = telefon;
             modalEmail.value = email;
-            
-        console.log("ID:", id, "Telefon:", telefon, "Email:", email);
+
+            console.log("ID:", id, "Telefon:", telefon, "Email:", email);
         });
     </script>
 }

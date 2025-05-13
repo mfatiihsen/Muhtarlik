@@ -45,8 +45,12 @@
             <td>@yonetici.Telefon</td>
             <td>@yonetici.OlusturmaTarih.ToString("dd.MM.yyyy")</td>
             <td>
-              <button class="btn btn-sm btn-warning me-1">Düzenle</button>
-              <button class="btn btn-sm btn-danger">Sil</button>
+              <form asp-controller="Admin" asp-action="YoneticiSil" method="post"
+                onsubmit="return Confirm('Bu Yöneticiyi Silmek istediğinize emin misiniz?');" style="display: inline;">
+                <input type="hidden" name="id" value="@yonetici.Id">
+                <button class="btn btn-sm btn-danger">Sil</button>
+              </form>
+
             </td>
           </tr>
         }

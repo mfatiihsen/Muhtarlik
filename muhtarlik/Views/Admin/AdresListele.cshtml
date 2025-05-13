@@ -45,7 +45,6 @@
                 <th>NO</th>
                 <th>DAİRE</th>
                 <th>TAM ADRES</th>
-                <th>DÜZENLE</th>
                 <th>SİL</th>
             </tr>
         </thead>
@@ -61,16 +60,9 @@
                     <td>@item.Daire</td>
                     <td>@item.TamAdres</td>
                     <td>
-                        <!-- Düzenleme Butonu -->
-                        @* <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                            data-bs-target="#editAddressModal" onclick="openEditAddressModal(@item.Id)">
-                            <i class="fa-solid fa-pen-to-square" style="cursor:pointer;color:white"></i>
-                        </button> *@
-                    </td>
-                    <td>
-                        <form asp-action="Delete" asp-controller="Vatandas" method="post"
+                        <form asp-action="AdresSil" asp-controller="Admin" method="post"
                             onsubmit="return confirm('Bu adresi silmek istediğinize emin misiniz?');">
-                            <input type="hidden" name="adresId" value="@item.Id" />
+                            <input type="hidden" name="id" value="@item.Id" />
                             <button type="submit" class="btn btn-danger">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
@@ -81,61 +73,3 @@
         </tbody>
     </table>
 </div>
-
-<!-- Adres Düzenleme Modalı -->
-<div class="modal fade" id="editAddressModal" tabindex="-1" role="dialog" aria-labelledby="editAddressModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editAddressModalLabel">Adres Düzenle</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editAddressForm" method="post">
-                    <input type="hidden" id="editAddressId" name="Id" />
-
-                    <div class="form-group">
-                        <label for="editIl">İl</label>
-                        <input type="text" class="form-control" id="editIl" name="Il" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editIlce">İlçe</label>
-                        <input type="text" class="form-control" id="editIlce" name="Ilce" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editSokak">Sokak</label>
-                        <input type="text" class="form-control" id="editSokak" name="Sokak" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editCadde">Cadde</label>
-                        <input type="text" class="form-control" id="editCadde" name="Cadde" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editNo">No</label>
-                        <input type="text" class="form-control" id="editNo" name="No" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editDaire">Daire</label>
-                        <input type="text" class="form-control" id="editDaire" name="Daire" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editTamAdres">Tam Adres</label>
-                        <textarea class="form-control" id="editTamAdres" name="TamAdres" required></textarea>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Kaydet</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
